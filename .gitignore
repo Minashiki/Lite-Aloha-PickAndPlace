@@ -1,0 +1,34 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# ---- IDE / 编辑器 ----
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- 训练产物：日志 / 模型 / TensorBoard / 视频 ----
+logs/
+logs_*/
+runs/
+tb/
+videos/
+*.monitor.csv
+*.zip
+*.npz
+*.pt
+*.pth
+*.mp4
+*.gif
+
+# ---- MuJoCo ----
+MUJOCO_LOG.TXT

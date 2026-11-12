@@ -1,0 +1,19 @@
+# LiteAlohaPAP —— Aloha Pick & Place（Python 3.12）
+# 安装：conda activate LiteAlohaPAP && pip install -r requirements.txt
+# torch 从 PyTorch 官方 CUDA 13.0 源安装（RTX 4060）；若只用 CPU，可删除下一行。
+--extra-index-url https://download.pytorch.org/whl/cu130
+
+# 仿真 / 环境
+mujoco==3.3.7               # 刻意停留在 3.x，mujoco 4.x 与 gymnasium-robotics 的兼容性未验证
+gymnasium==1.4.0
+gymnasium-robotics==1.4.2
+numpy>=2.0,<3
+
+# 强化学习
+torch==2.14.1
+stable-baselines3==2.9.2
+sb3-contrib==2.9.2          # TQC
+tensorboard==2.21.0
+
+# 评估视频录制（轻量 mp4）
+imageio[ffmpeg]==2.38.1
