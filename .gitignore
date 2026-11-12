@@ -32,3 +32,10 @@ videos/
 
 # ---- MuJoCo ----
 MUJOCO_LOG.TXT
+
+plan.md
+# ---- 里程碑任务说明 / 报告 ----
+tasks/
+
+# ---- Cursor 项目权限（含本机绝对路径）----
+.cursor/

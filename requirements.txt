@@ -8,6 +8,7 @@ mujoco==3.3.7               # 刻意停留在 3.x，mujoco 4.x 与 gymnasium-rob
 gymnasium==1.4.0
 gymnasium-robotics==1.4.2
 numpy>=2.0,<3
+packaging==26.3             # 版本约束解析（scripts/smoke_test.py）
 
 # 强化学习
 torch==2.14.1
