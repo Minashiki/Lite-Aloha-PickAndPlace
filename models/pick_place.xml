@@ -1,0 +1,54 @@
+<mujoco model="aloha pick place">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+
+  <option timestep="0.002" integrator="implicitfast" cone="elliptic" impratio="10"/>
+
+  <include file="aloha_pap.xml"/>
+
+  <statistic center="0.35 0 0.25" extent="0.8"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <camera name="watching" pos="1.669 -1.154 1.019" xyaxes="0.644 0.765 0.000 -0.250 0.210 0.945"/>
+    <!-- 斜视，对准裁剪盒中心。320x240 下能看到夹爪、物块和采样区。 -->
+    <camera name="eval_cam" fovy="60" pos="0.78 -0.48 0.46" xyaxes="0.692532 0.721387 0 -0.310109 0.297705 0.902887"/>
+
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <body name="mocap" mocap="true" pos="0.30 0 0.20">
+      <geom name="mocap_geom" type="sphere" size="0.01" mass="0" rgba="0 1 1 0.4" contype="0" conaffinity="0" group="5"/>
+    </body>
+
+    <site name="target" pos="0.40 0.15 0.22" size="0.015" rgba="1 0 0 1" type="sphere"/>
+
+    <body name="obj" pos="0.35 0 0.02" quat="1 0 0 0">
+      <joint type="free" name="obj_joint" damping="0.01"/>
+      <geom name="obj_geom" type="box" size="0.02 0.02 0.02" mass="0.05" rgba="0.2 0.7 0.3 1" friction="1 0.005 0.0001" condim="4"/>
+      <site name="obj_site" pos="0 0 0" size="0.005" rgba="0 0.2 1 1" type="sphere"/>
+    </body>
+  </worldbody>
+
+  <equality>
+    <weld body1="mocap" body2="left/pinch" relpose="0 0 0 1 0 0 0" solref="0.01 1" torquescale="5"/>
+  </equality>
+
+  <keyframe>
+    <key name="home"
+      qpos="0.00040629901495 -0.047747780177 0.10111069065 -0.0000003110639406 1.518228499 -0.00039001127121 0.037 0.037 0.35 0 0.02 1 0 0 0"
+      ctrl="0.037"
+      mpos="0.3 0 0.2"
+      mquat="0 -0.7071067811865475 0.7071067811865476 0"/>
+  </keyframe>
+</mujoco>
