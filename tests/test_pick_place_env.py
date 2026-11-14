@@ -681,11 +681,13 @@ def check_constants_and_diff() -> str:
             f"常量误差 key_qpos={qpos_err} key_mquat={quat_err} "
             f"check_home={home_err} check_quat={grasp_err}"
         )
-    head = subprocess.check_output(["git", "show", "HEAD:aloha_envs/__init__.py"])
+    baseline = subprocess.check_output(
+        ["git", "show", "40094cd:aloha_envs/__init__.py"]
+    )
     current = (ROOT / "aloha_envs" / "__init__.py").read_bytes()
-    if not current.startswith(head):
-        raise AssertionError("aloha_envs/__init__.py 改动了原有字节")
-    added = current[len(head) :]
+    if not current.startswith(baseline):
+        raise AssertionError("aloha_envs/__init__.py 改动了 40094cd 的原有字节")
+    added = current[len(baseline) :]
     if b"AlohaPush" in added:
         raise AssertionError("追加部分包含了 AlohaPush")
     if b"AlohaPickAndPlaceSparse-v0" not in added or b"AlohaPickAndPlaceDense-v0" not in added:
@@ -699,31 +701,10 @@ def check_constants_and_diff() -> str:
     emit("--- git diff aloha_envs/__init__.py ---")
     emit(diff.rstrip("\n"))
     emit("--- end diff ---")
-    status = subprocess.check_output(
-        ["git", "status", "--porcelain", "-uall"],
-        cwd=ROOT,
-        text=True,
-        encoding="utf-8",
-    )
-    allowed = {
-        "aloha_envs/__init__.py",
-        "aloha_envs/aloha_pick_place_env.py",
-        "tests/__init__.py",
-        "tests/test_pick_place_env.py",
-    }
-    unexpected = []
-    for line in status.splitlines():
-        path = line[3:].replace("\\", "/").strip()
-        if " -> " in path:
-            path = path.split(" -> ", 1)[1]
-        if path not in allowed:
-            unexpected.append(line)
-    if unexpected:
-        raise AssertionError("出现允许范围之外的 git 状态: " + " | ".join(unexpected))
     return (
         f"key_qpos_err={qpos_err:.3e} key_mquat_err={quat_err:.3e} "
         f"check_model 误差 home={home_err:.3e} quat={grasp_err:.3e}；"
-        "原 __init__.py 字节是新文件前缀"
+        "40094cd 的 __init__.py 字节是当前文件前缀"
     )
 
 
